@@ -6,7 +6,7 @@
 :root{
   --navy:#2c5f8a; --navy-deep:#1b3d5a; --navy-soft:#eaf1f6;
   --ink:#16202a; --sub:#67788a; --paper:#eef2f5;
-  --line:#d6dfe6; --ng:#c0392b; --gold:#a97514;
+  --line:#d6dfe6; --ng:#c0392b; --gold:#a97514; --ok:#1f7a5a;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
@@ -22,14 +22,29 @@ body.kb .bar{display:none}
 
 header{
   position:sticky; top:0; z-index:10; background:var(--navy-deep); color:#fff;
-  padding:calc(8px + env(safe-area-inset-top)) 12px 8px; display:flex; align-items:center; gap:8px;
+  padding:calc(7px + env(safe-area-inset-top)) 10px 8px;
 }
-header h1{font-size:15px; margin:0; font-weight:600; letter-spacing:.06em; white-space:nowrap}
-header input{
-  flex:1; min-width:0; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
-  color:#fff; border-radius:6px; padding:7px 10px; font-size:15px; font-family:inherit;
+header .hrow{display:flex; align-items:center; gap:8px}
+header h1{font-size:15px; margin:0; font-weight:600; letter-spacing:.06em; white-space:nowrap; flex:none}
+header .tools{
+  display:flex; gap:5px; margin-left:auto; overflow-x:auto; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch; padding:1px 0;
 }
-header input::placeholder{color:rgba(255,255,255,.5)}
+header .tools::-webkit-scrollbar{display:none}
+header .tools button{
+  flex:none; background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.24);
+  border-radius:6px; padding:7px 10px; font-size:12px; font-family:inherit; cursor:pointer; white-space:nowrap;
+}
+header .tools button:active{background:rgba(255,255,255,.28)}
+header .tools button.on{background:rgba(255,255,255,.22); font-weight:600}
+header > input{
+  width:100%; margin-top:7px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+  color:#fff; border-radius:6px; padding:8px 10px; font-size:15px; font-family:inherit;
+}
+header > input::placeholder{color:rgba(255,255,255,.5)}
+header .dot{width:8px; height:8px; border-radius:50%; background:#7fbf9a; flex:none; transition:opacity .3s}
+header .dot.off{background:#e0a030}
+header .dot.fade{opacity:.25}
 
 main{max-width:600px; margin:0 auto; padding:12px 10px}
 
@@ -48,10 +63,7 @@ label b{color:var(--navy); font-family:var(--mono)}
   font-size:17px; background:#fff; color:var(--ink); font-family:inherit}
 .f:focus{outline:2px solid var(--navy); outline-offset:-1px; border-color:var(--navy)}
 .f::placeholder{color:#b6c2cc}
-
-/* タップして数字キーパッドで入れる欄 */
-.k{font-family:var(--mono); text-align:right; font-variant-numeric:tabular-nums; cursor:pointer;
-  user-select:none; background:#fff; caret-color:transparent}
+.k{font-family:var(--mono); text-align:right; font-variant-numeric:tabular-nums; cursor:pointer; user-select:none; background:#fff}
 .k.gold{border-color:var(--gold)}
 .k.on{background:#fff8dc; outline:2px solid var(--navy); outline-offset:-1px; border-color:var(--navy)}
 
@@ -63,10 +75,8 @@ label b{color:var(--navy); font-family:var(--mono)}
 .sr{align-items:stretch; border-bottom:1px solid #eef2f5}
 .sr:last-child{border-bottom:none}
 .sr .i{display:grid; place-items:center; font-family:var(--mono); font-size:13px; color:var(--sub)}
-.sr .cell{
-  border-left:1px solid #eef2f5; padding:14px 8px; font-size:17px; font-family:var(--mono);
-  text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); cursor:pointer; user-select:none;
-}
+.sr .cell{border-left:1px solid #eef2f5; padding:14px 8px; font-size:17px; font-family:var(--mono);
+  text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); cursor:pointer; user-select:none}
 .sr .cell.empty{color:#c3ccd4}
 .sr .cell.on{background:#fff8dc; box-shadow:inset 0 0 0 2px var(--navy)}
 .sr .el{border-left:1px solid #eef2f5; padding:14px 8px; text-align:right; font-family:var(--mono);
@@ -75,12 +85,14 @@ label b{color:var(--navy); font-family:var(--mono)}
 .sr .x{border:none; background:none; color:#c3ccd4; font-size:18px; cursor:pointer}
 .sr .x:hover{color:var(--ng)}
 
-.acts{display:flex; gap:8px; margin:14px 0 10px}
-.acts button{flex:1; padding:14px; border-radius:9px; border:1px solid var(--line);
-  background:#fff; color:var(--navy-deep); font-size:15px; font-family:inherit; cursor:pointer}
-.acts button.g{background:var(--gold); color:#fff; border-color:var(--gold); font-weight:600}
+.acts{display:flex; gap:8px; margin:12px 0}
+.acts button{flex:1; padding:13px 4px; border-radius:9px; border:1px solid var(--line);
+  background:#fff; color:var(--navy-deep); font-size:14px; font-family:inherit; cursor:pointer}
+.acts button.g{background:var(--gold); color:#fff; border-color:var(--gold); font-weight:600; font-size:15px}
+.acts button.p{background:var(--navy); color:#fff; border-color:var(--navy); font-weight:600}
 .acts button:active{transform:translateY(1px)}
 .acts button:disabled{opacity:.4}
+.acts.sub button{font-size:13px; padding:11px 4px; color:var(--sub)}
 
 .bar{position:fixed; left:0; right:0; bottom:0; z-index:10; background:var(--navy-deep); color:#fff;
   padding:10px 14px calc(10px + env(safe-area-inset-bottom)); display:flex; align-items:center; gap:12px}
@@ -97,12 +109,9 @@ label b{color:var(--navy); font-family:var(--mono)}
   padding:10px 12px; font-size:13px; margin-bottom:10px}
 .msg:empty{display:none}
 
-/* ---- 数字キーパッド ---- */
-#kb{
-  position:fixed; left:0; right:0; bottom:0; z-index:30; background:#dfe5ea;
+#kb{position:fixed; left:0; right:0; bottom:0; z-index:30; background:#dfe5ea;
   border-top:1px solid #b9c4cd; padding:0 6px calc(6px + env(safe-area-inset-bottom));
-  transform:translateY(100%); transition:transform .18s ease-out;
-}
+  transform:translateY(100%); transition:transform .18s ease-out}
 #kb.open{transform:none}
 #kbTop{display:flex; align-items:baseline; gap:10px; padding:9px 8px 7px}
 #kbTop .who{font-size:12px; color:var(--sub); letter-spacing:.06em}
@@ -110,19 +119,66 @@ label b{color:var(--navy); font-family:var(--mono)}
 #kbTop .val u{text-decoration:none; color:#c3ccd4}
 #kbTop .unit{font-size:12px; color:var(--sub)}
 #keys{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
-#keys button{
-  padding:16px 0; font-size:23px; font-family:var(--mono); border:none; border-radius:8px;
-  background:#fff; color:var(--ink); cursor:pointer; box-shadow:0 1px 0 #aab6bf;
-}
+#keys button{padding:16px 0; font-size:23px; font-family:var(--mono); border:none; border-radius:8px;
+  background:#fff; color:var(--ink); cursor:pointer; box-shadow:0 1px 0 #aab6bf}
 #keys button:active{background:#eef2f5; transform:translateY(1px); box-shadow:none}
 #keys button.fn{font-size:15px; font-family:inherit; background:#c3ccd4; color:var(--navy-deep)}
 #keys button.go{background:var(--navy); color:#fff; font-size:15px; font-family:inherit; font-weight:600}
 
-@media print{ header,.acts,.bar,#kb,.sr .x{display:none} body{background:#fff;padding:0} }
+/* 記録一覧 */
+#modal{position:fixed; inset:0; z-index:40; background:rgba(20,30,40,.5); display:none}
+#modal.open{display:block}
+#modal .sheet{position:absolute; left:0; right:0; bottom:0; max-height:78vh; overflow:auto;
+  background:#fff; border-radius:14px 14px 0 0; padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+#modal h2{margin:0 0 10px; font-size:15px; color:var(--navy-deep)}
+#modal .close{position:absolute; right:12px; top:10px; border:none; background:none; font-size:22px; color:var(--sub); cursor:pointer}
+.rec{display:flex; align-items:center; gap:10px; padding:11px 4px; border-bottom:1px solid var(--line)}
+.rec .nm{flex:1; min-width:0}
+.rec .nm b{display:block; font-weight:600; font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.rec .nm span{font-size:11px; color:var(--sub); font-family:var(--mono)}
+.rec button{border:1px solid var(--line); background:#fff; border-radius:7px; padding:8px 12px; font-size:13px; cursor:pointer}
+.rec button.d{border-color:#f0cfc9; color:var(--ng)}
+.empty{color:var(--sub); font-size:13px; padding:16px 4px}
+
+/* ---- 印刷用シート（レベル移動 様式） ---- */
+#sheet{display:none}
+@page{size:A4 portrait; margin:12mm}
+@media print{
+  body{background:#fff; padding:0}
+  body > *{display:none !important}
+  #sheet{display:block !important}
+  .pg{page-break-after:always}
+  .pg:last-child{page-break-after:auto}
+}
+#sheet .ttl{font-size:12pt; margin-bottom:6pt; display:flex; align-items:baseline; gap:14pt}
+#sheet .ttl .br{margin-left:auto; letter-spacing:2em}
+#sheet .cols{display:flex; gap:8pt; align-items:flex-start}
+#sheet table{border-collapse:collapse; width:50%; table-layout:fixed}
+#sheet td{border:.6pt solid #000; height:24pt; font-size:9pt; padding:1pt 4pt;
+  font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right}
+#sheet td.h{text-align:center; font-family:inherit; height:20pt; font-size:9pt}
+#sheet td.l{text-align:left; font-family:inherit}
+#sheet td.c{text-align:center; font-family:inherit; font-size:8.5pt}
+#sheet td.slash{background:linear-gradient(to top right,transparent 49%,#000 49.5%,#000 50.5%,transparent 51%)}
+#sheet col.w1{width:30%} #sheet col.w2{width:24%} #sheet col.w3{width:20%} #sheet col.w4{width:26%}
+#sheet .note{margin-top:6pt; font-size:9pt}
 </style>
 
 <header>
-  <h1>レベル移動</h1>
+  <div class="hrow">
+    <h1>レベル移動</h1>
+    <span class="dot" id="dot" title="保存状態"></span>
+    <div class="tools">
+      <button id="btnSave" class="on">保存</button>
+      <button id="btnList">一覧</button>
+      <button id="btnPdf">PDF</button>
+      <button id="btnCsv">CSV</button>
+      <button id="btnExport">書き出し</button>
+      <button id="btnImport">読み込み</button>
+      <button id="btnCopy">コピー</button>
+      <button id="btnClear">新規</button>
+    </div>
+  </div>
   <input id="site" placeholder="現場名">
 </header>
 
@@ -150,11 +206,8 @@ label b{color:var(--navy); font-family:var(--mono)}
     </div></div>
   </div>
 
-  <div class="acts">
-    <button class="g" id="btnEnd">ここを終点にする</button>
-    <button id="btnCopy">コピー</button>
-    <button id="btnClear">クリア</button>
-  </div>
+  <div class="acts"><button class="g" id="btnEnd">ここを終点にする</button></div>
+  <input type="file" id="fileIn" accept=".json,application/json" hidden>
 </main>
 
 <div class="bar">
@@ -164,27 +217,31 @@ label b{color:var(--navy); font-family:var(--mono)}
 </div>
 
 <div id="kb">
-  <div id="kbTop">
-    <span class="who" id="kbWho"></span>
-    <span class="val" id="kbVal">—</span><span class="unit">m</span>
-  </div>
+  <div id="kbTop"><span class="who" id="kbWho"></span><span class="val" id="kbVal">—</span><span class="unit">m</span></div>
   <div id="keys">
-    <button data-d="7">7</button><button data-d="8">8</button><button data-d="9">9</button>
-    <button class="fn" data-a="bs">⌫</button>
-    <button data-d="4">4</button><button data-d="5">5</button><button data-d="6">6</button>
-    <button class="fn" data-a="clr">C</button>
-    <button data-d="1">1</button><button data-d="2">2</button><button data-d="3">3</button>
-    <button class="fn" data-a="neg">±</button>
+    <button data-d="7">7</button><button data-d="8">8</button><button data-d="9">9</button><button class="fn" data-a="bs">⌫</button>
+    <button data-d="4">4</button><button data-d="5">5</button><button data-d="6">6</button><button class="fn" data-a="clr">C</button>
+    <button data-d="1">1</button><button data-d="2">2</button><button data-d="3">3</button><button class="fn" data-a="neg">±</button>
     <button class="fn" data-a="00">00</button><button data-d="0">0</button>
     <button class="go" data-a="next">次へ</button><button class="go" data-a="done">完了</button>
   </div>
 </div>
 
+<div id="modal">
+  <div class="sheet">
+    <button class="close" id="mClose">×</button>
+    <h2>記録一覧</h2>
+    <div id="recs"></div>
+  </div>
+</div>
+
+<div id="sheet"></div>
+
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
 
-/* 値はすべて「digit文字列」で持つ。下3桁がミリ。 "1550" → 1.550 / "9484" → 9.484 */
+/* 値は digit 文字列。下3桁がミリ。 "1550" → 1.550 */
 const toVal = s => {
   if(!s) return null;
   const neg = s[0] === "-", d = neg ? s.slice(1) : s;
@@ -195,9 +252,53 @@ const toVal = s => {
 const fmt = s => { const v = toVal(s); return v===null ? "" : v.toFixed(3); };
 const f3  = v => Number.isFinite(v) ? v.toFixed(3) : "";
 const row = () => ({bs:"", fs:""});
+const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-const S = { site:"", startName:"", startH:"", rows:[row()], ended:false, endName:"", endH:"" };
-let act = null;   // {i,k} か {fld:"startH"|"endH"}
+let S = { id:null, site:"", startName:"", startH:"", rows:[row()], ended:false, endName:"", endH:"" };
+let act = null;
+
+/* ---------- 保存（IndexedDB） ---------- */
+const DB = "levelMove", STORE = "obs";
+let db = null, dbOk = false;
+
+function openDb(){
+  return new Promise(res => {
+    if(!("indexedDB" in window)) return res(null);
+    let rq;
+    try{ rq = indexedDB.open(DB, 1); }catch(_){ return res(null); }
+    rq.onupgradeneeded = () => { const d = rq.result;
+      if(!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE, {keyPath:"id"}); };
+    rq.onsuccess = () => res(rq.result);
+    rq.onerror = () => res(null);
+    setTimeout(() => res(null), 3000);
+  });
+}
+const tx = (mode, fn) => new Promise((res, rej) => {
+  if(!db) return rej(new Error("no db"));
+  const t = db.transaction(STORE, mode), r = fn(t.objectStore(STORE));
+  t.oncomplete = () => res(r && r.result);
+  t.onerror = () => rej(t.error);
+});
+const putRec = rec => tx("readwrite", st => st.put(rec));
+const allRecs = () => tx("readonly", st => st.getAll());
+const delRec = id => tx("readwrite", st => st.delete(id));
+const getRec = id => tx("readonly", st => st.get(id));
+
+let dirty = null;
+function markSaved(state){
+  const dot = $("dot");
+  dot.classList.toggle("off", !dbOk);
+  dot.title = dbOk ? (state==="saving" ? "保存中" : "自動保存されています") : "この環境では自動保存できません。JSON書き出しを使ってください";
+  dot.classList.remove("fade");
+  if(state !== "saving") setTimeout(() => dot.classList.add("fade"), 700);
+}
+function autosave(){
+  if(!dbOk) return;
+  clearTimeout(dirty);
+  dirty = setTimeout(async () => {
+    try{ markSaved("saving"); await putRec({...S, id:"__draft__", savedAt:Date.now()}); markSaved(); }catch(_){}
+  }, 600);
+}
 
 /* ---------- 計算 ---------- */
 function compute(){
@@ -215,19 +316,22 @@ function compute(){
   else {
     msg = S.ended ? "起点にも終点にも標高がありません。どちらかを入れると全点が計算されます。"
                   : "起点の標高を入れると、前視するたびに標高が出ます。分からない場合は終点まで観測してから終点の標高を入れてください。";
-    return {off, H, close, base, msg, n};
+    return {off, H, Hraw:H, close, base, msg, n};
   }
-  if(off[base] === null){ msg = "後視・前視が埋まっていない行があります。"; return {off, H, close, base, msg, n}; }
+  if(off[base] === null){ msg = "後視・前視が埋まっていない行があります。"; return {off, H, Hraw:H, close, base, msg, n}; }
 
   const bh = (base === 0) ? h0 : hEnd;
   for(let i=0;i<=n;i++) if(off[i] !== null) H[i] = bh + (off[i] - off[base]);
-
+  const Hraw = H.slice();   // 補正前（手簿はこちらを載せる）
   if(h0 !== null && hEnd !== null && H[n] !== null && n > 0){
     close = H[n] - hEnd;
     for(let i=0;i<=n;i++) if(H[i] !== null) H[i] -= close * (i/n);
   }
-  return {off, H, close, base, msg, n};
+  return {off, H, Hraw, close, base, msg, n};
 }
+
+const ptName = (i, R) => i === 0 ? (S.startName || "起点")
+  : (S.ended && i === R.n) ? (S.endName || "終点") : "TP" + i;
 
 /* ---------- 描画 ---------- */
 const same = (a,b) => a && b && a.i===b.i && a.k===b.k && a.fld===b.fld;
@@ -256,7 +360,6 @@ function render(){
     </div>`;
   }).join("");
 
-  // 起点・終点の標高欄（基準でない側は逆算値／計算値を薄く出す）
   const sh = $("startH"), eh = $("endH");
   sh.classList.toggle("on", same(act,{fld:"startH"}));
   eh.classList.toggle("on", same(act,{fld:"endH"}));
@@ -267,9 +370,7 @@ function render(){
 
   let li = -1;
   for(let i=R.H.length-1;i>=0;i--) if(R.H[i] !== null){ li = i; break; }
-  const nm = li <= 0 ? (S.startName || "起点")
-           : (S.ended && li === R.n) ? (S.endName || "終点") : "点 " + li;
-  $("bLab").textContent = (R.base !== 0 && li === 0) ? (S.startName || "起点") + "（逆算）" : nm;
+  $("bLab").textContent = (R.base !== 0 && li === 0) ? (S.startName || "起点") + "（逆算）" : (li < 0 ? "最終点" : ptName(li, R));
   $("bVal").innerHTML = li < 0 ? "—" : f3(R.H[li]) + ' <small>m</small>';
 
   const chip = $("chip");
@@ -281,6 +382,7 @@ function render(){
     chip.innerHTML = `閉合差<span class="c">${mm>=0?"+":""}${mm.toFixed(1)} mm</span>`;
   }
   drawKb();
+  autosave();
 }
 
 /* ---------- キーパッド ---------- */
@@ -293,7 +395,6 @@ function label(){
   const isEnd = S.ended && act.i === S.rows.length-1;
   return `${isEnd ? "終点" : "器械点 " + (act.i+1)}　${act.k === "bs" ? "後視 ＋" : "前視 −"}`;
 }
-
 function drawKb(){
   const open = !!act;
   $("kb").classList.toggle("open", open);
@@ -303,23 +404,18 @@ function drawKb(){
   const d = getD();
   $("kbVal").innerHTML = d ? fmt(d) : "<u>0.000</u>";
 }
-
 function focusField(a){
-  act = a;
-  render();
+  act = a; render();
   const el = a.fld ? $(a.fld) : document.querySelector(`[data-i="${a.i}"][data-k="${a.k}"]`);
   if(el) el.scrollIntoView({block:"center", behavior:"smooth"});
 }
-
 function nextField(){
   if(!act || act.fld){ act = null; render(); return; }
   if(act.k === "bs"){ focusField({i:act.i, k:"fs"}); return; }
-  // 前視を終えた → 次の器械点の後視へ（必要なら行を足す）
   if(!S.ended && act.i === S.rows.length-1 && toVal(S.rows[act.i].fs) !== null) S.rows.push(row());
   if(act.i + 1 < S.rows.length) focusField({i:act.i+1, k:"bs"});
   else { act = null; render(); }
 }
-
 function press(key){
   if(!act) return;
   let d = getD();
@@ -328,11 +424,9 @@ function press(key){
   else if(key === "clr") d = "";
   else if(key === "neg") d = d.startsWith("-") ? d.slice(1) : "-" + d;
   setD(d);
-  // 前視まで入れたら次の行を先に生やしておく
   if(!S.ended && !act.fld && act.k === "fs" && act.i === S.rows.length-1 && toVal(d) !== null) S.rows.push(row());
   render();
 }
-
 $("keys").addEventListener("click", e => {
   const b = e.target.closest("button"); if(!b) return;
   if(b.dataset.d !== undefined) return press(b.dataset.d);
@@ -341,8 +435,6 @@ $("keys").addEventListener("click", e => {
   else if(a === "done"){ act = null; render(); }
   else press(a);
 });
-
-/* PCの物理キーボードも受ける */
 document.addEventListener("keydown", e => {
   if(!act) return;
   if(/^\d$/.test(e.key)){ e.preventDefault(); press(e.key); }
@@ -352,33 +444,24 @@ document.addEventListener("keydown", e => {
   else if(e.key === "-"){ e.preventDefault(); press("neg"); }
 });
 
-/* ---------- タップ ---------- */
 document.addEventListener("click", e => {
   const cell = e.target.closest(".cell");
   if(cell){ focusField({i:+cell.dataset.i, k:cell.dataset.k}); return; }
   const fld = e.target.closest("[data-fld]");
   if(fld){ focusField({fld:fld.dataset.fld}); return; }
-
   const del = e.target.closest("[data-del]");
   if(del){
     const i = +del.dataset.del;
     if(S.rows.length > 1) S.rows.splice(i,1); else S.rows = [row()];
     act = null; render(); return;
   }
-  // 欄・キーパッド以外を触ったら閉じる
   if(act && !e.target.closest("#kb")){ act = null; render(); }
 });
-
 document.addEventListener("input", e => {
   const id = e.target.id;
-  if(["site","startName","endName"].includes(id)){
-    S[id] = e.target.value;
-    if(id !== "site") render();
-  }
+  if(["site","startName","endName"].includes(id)){ S[id] = e.target.value; render(); }
 });
-document.addEventListener("focusin", e => {
-  if(e.target.tagName === "INPUT" && act){ act = null; render(); }
-});
+document.addEventListener("focusin", e => { if(e.target.tagName === "INPUT" && act){ act = null; render(); } });
 
 $("btnEnd").onclick = () => {
   act = null;
@@ -391,27 +474,182 @@ $("btnEnd").onclick = () => {
   if(S.ended) $("endName").focus();
 };
 
-$("btnClear").onclick = () => {
-  if(!confirm("入力をすべて消します。よろしいですか？")) return;
-  Object.assign(S, {startName:"", startH:"", rows:[row()], ended:false, endName:"", endH:""});
-  ["startName","endName"].forEach(k => $(k).value = "");
+/* ---------- 記録の保存・読込 ---------- */
+function fillForm(){
+  $("site").value = S.site; $("startName").value = S.startName; $("endName").value = S.endName;
   act = null; render();
+}
+$("btnSave").onclick = async () => {
+  if(!dbOk) return alert("この環境では端末に保存できません。「JSON書き出し」でファイルとして残してください。");
+  const nm = prompt("記録名", S.site || new Date().toLocaleDateString("ja-JP"));
+  if(nm === null) return;
+  S.site = S.site || nm; $("site").value = S.site;
+  S.id = S.id || ("r" + Date.now());
+  try{ await putRec({...S, title:nm, savedAt:Date.now()}); alert("保存しました"); }
+  catch(_){ alert("保存できませんでした。JSON書き出しをお使いください。"); }
+};
+$("btnList").onclick = async () => {
+  $("modal").classList.add("open");
+  let recs = [];
+  try{ recs = (await allRecs() || []).filter(r => r.id !== "__draft__"); }catch(_){}
+  recs.sort((a,b) => b.savedAt - a.savedAt);
+  $("recs").innerHTML = recs.length ? recs.map(r => `
+    <div class="rec">
+      <div class="nm"><b>${esc(r.title || r.site || "無題")}</b>
+        <span>${new Date(r.savedAt).toLocaleString("ja-JP")}　器械点 ${r.rows.length}</span></div>
+      <button data-open="${r.id}">開く</button>
+      <button class="d" data-rm="${r.id}">削除</button>
+    </div>`).join("") : `<div class="empty">保存された記録はまだありません。</div>`;
+};
+$("mClose").onclick = () => $("modal").classList.remove("open");
+$("recs").addEventListener("click", async e => {
+  const o = e.target.dataset.open, d = e.target.dataset.rm;
+  if(o){ const r = await getRec(o); if(r){ S = {...r}; fillForm(); $("modal").classList.remove("open"); } }
+  if(d){ if(confirm("この記録を削除します。よろしいですか？")){ await delRec(d); $("btnList").click(); } }
+});
+
+/* ---------- CSV ---------- */
+$("btnCsv").onclick = () => {
+  const R = compute();
+  if(R.H[0] === null && R.H[R.n] === null) return alert("まだ計算できていません。起点か終点の標高を入れてください。");
+  const q = s => `"${String(s??"").replace(/"/g,'""')}"`;
+  const L = [];
+  if(S.site) L.push([q("現場名"), q(S.site)].join(","));
+  L.push([q("出力日時"), q(new Date().toLocaleString("ja-JP"))].join(","));
+  L.push("");
+  L.push(["番号","点名","後視 m","器械高 m","前視 m","観測標高 m","補正数 m","結果標高 m"].map(q).join(","));
+
+  for(let i=0;i<=R.n;i++){
+    const r = S.rows[i];                       // 点 i の次の器械据付（終点にはない）
+    const raw = R.Hraw[i], fin = R.H[i];
+    const ih = (r && raw !== null && toVal(r.bs) !== null) ? raw + toVal(r.bs) : null;
+    const corr = (raw !== null && fin !== null) ? fin - raw : null;
+    L.push([
+      q(i + 1), q(ptName(i, R)),
+      q(r ? fmt(r.bs) : ""), q(f3(ih)), q(r ? fmt(r.fs) : ""),
+      q(f3(raw)), q(corr === null ? "" : f3(corr)), q(f3(fin))
+    ].join(","));
+  }
+  if(R.close !== null){
+    L.push("");
+    L.push([q("閉合差 mm"), q((R.close*1000).toFixed(1)), q("器械点数で按分補正")].join(","));
+  }
+  const blob = new Blob(["\uFEFF" + L.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = (S.site || "レベル移動") + "_レベル移動.csv";
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+$("btnExport").onclick = () => {
+  const blob = new Blob([JSON.stringify({app:"レベル移動", ver:1, ...S}, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = (S.site || "レベル移動") + ".json";
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+$("btnImport").onclick = () => $("fileIn").click();
+$("fileIn").onchange = e => {
+  const file = e.target.files[0]; if(!file) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try{
+      const d = JSON.parse(fr.result);
+      if(!Array.isArray(d.rows)) throw 0;
+      S = {id:d.id||null, site:d.site||"", startName:d.startName||"", startH:d.startH||"",
+           rows:d.rows.map(r=>({bs:r.bs||"", fs:r.fs||""})), ended:!!d.ended, endName:d.endName||"", endH:d.endH||""};
+      fillForm();
+    }catch(_){ alert("このファイルは読み込めませんでした。書き出したJSONを選んでください。"); }
+  };
+  fr.readAsText(file); e.target.value = "";
 };
 
 $("btnCopy").onclick = async () => {
   const R = compute(), L = [];
   if(S.site) L.push(S.site);
-  L.push(`${S.startName || "起点"}\t${R.H[0]===null ? "—" : f3(R.H[0])}`);
   S.rows.forEach((r,i) => {
     if(R.H[i+1] === null) return;
-    const nm = (S.ended && i === S.rows.length-1) ? (S.endName || "終点") : "点" + (i+1);
-    L.push(`${nm}\t${f3(R.H[i+1])}\tBS ${fmt(r.bs) || "-"} / FS ${fmt(r.fs) || "-"}`);
+    L.push(`${ptName(i+1,R)}\t${f3(R.H[i+1])}\tBS ${fmt(r.bs)||"-"} / FS ${fmt(r.fs)||"-"}`);
   });
+  L.unshift(`${ptName(0,R)}\t${R.H[0]===null?"—":f3(R.H[0])}`);
   if(R.close !== null) L.push(`閉合差 ${(R.close*1000).toFixed(1)} mm（按分補正済み）`);
   const text = L.join("\n");
   try{ await navigator.clipboard.writeText(text); alert("コピーしました"); }
   catch(_){ prompt("コピーしてください", text); }
 };
 
-render();
+$("btnClear").onclick = () => {
+  if(!confirm("新しい観測を始めます。保存していない入力は消えます。")) return;
+  S = {id:null, site:"", startName:"", startH:"", rows:[row()], ended:false, endName:"", endH:""};
+  fillForm();
+};
+
+/* ---------- PDF（レベル移動 様式：器械高法） ---------- */
+const PER_COL = 10;   // 1列あたりの器械点数（用紙どおり）
+
+function buildSheet(){
+  const R = compute();
+  // 器械点ごとのブロック：点の標高 → +後視 → EL(器械高) → −前視 → 次の点
+  const HH = R.Hraw;   // 手簿は補正前の観測値で通す（EL − 前視 = 次の点、が紙の上で合う）
+  const blocks = S.rows.map((r,i) => ({
+    pt: ptName(i, R),
+    ptH: HH[i],
+    bs: fmt(r.bs),
+    ih: (HH[i] !== null && toVal(r.bs) !== null) ? HH[i] + toVal(r.bs) : null,
+    fs: fmt(r.fs),
+  }));
+  const endPt = {pt: ptName(S.rows.length, R), ptH: HH[S.rows.length]};
+
+  // 列に切る（最後の列の末尾に終点行）
+  const cols = [];
+  for(let i=0;i<blocks.length;i+=PER_COL) cols.push(blocks.slice(i, i+PER_COL));
+  if(!cols.length) cols.push([]);
+  cols[cols.length-1].last = endPt;
+
+  const colHtml = c => {
+    const rows = c.map(b => `
+      <tr><td class="l">点：${esc(b.pt)}</td><td>${b.ptH===null?"":f3(b.ptH)}</td><td class="c">後視 ＋</td><td>${b.bs}</td></tr>
+      <tr><td class="c">EL</td><td>${b.ih===null?"":f3(b.ih)}</td><td class="c">前視 −</td><td>${b.fs}</td></tr>`).join("");
+    const pad = Array.from({length: Math.max(0, PER_COL - c.length)}, () => `
+      <tr><td class="l">点：</td><td></td><td class="c">後視 ＋</td><td></td></tr>
+      <tr><td class="c">EL</td><td></td><td class="c">前視 −</td><td></td></tr>`).join("");
+    const lastRow = c.last
+      ? `<tr><td class="l">点：${esc(c.last.pt)}</td><td>${c.last.ptH===null?"":f3(c.last.ptH)}</td><td colspan="2" class="slash"></td></tr>`
+      : `<tr><td class="l">点：</td><td></td><td colspan="2" class="slash"></td></tr>`;
+    return `<table><col class="w1"><col class="w2"><col class="w3"><col class="w4">
+      <tr><td class="h"></td><td class="h">標高</td><td class="h"></td><td class="h">読み値</td></tr>
+      ${rows}${pad}${lastRow}</table>`;
+  };
+
+  const note = R.close === null ? "" :
+    `<div class="note">閉合差 ${(R.close*1000>=0?"+":"")}${(R.close*1000).toFixed(1)} mm　`
+    + `／ 器械点数で按分補正 → ${esc(ptName(R.n,R))} 標高 ${f3(R.H[R.n])} m</div>`;
+
+  const pages = [];
+  for(let i=0;i<cols.length;i+=2) pages.push(cols.slice(i,i+2));
+  $("sheet").innerHTML = pages.map((p,pi) => `
+    <div class="pg">
+      <div class="ttl"><span>レベル移動</span><span>件名：${esc(S.site)}</span>
+        <span class="br">[ ${pages.length>1 ? (pi+1)+"/"+pages.length : ""} ]</span></div>
+      <div class="cols">${p.map(colHtml).join("")}${p.length===1 ? colHtml([]) : ""}</div>
+      ${pi === pages.length-1 ? note : ""}
+    </div>`).join("");
+}
+$("btnPdf").onclick = () => { act = null; render(); buildSheet(); setTimeout(() => window.print(), 60); };
+
+/* ---------- 起動 ---------- */
+(async () => {
+  db = await openDb();
+  dbOk = !!db;
+  markSaved();
+  if(dbOk){
+    try{
+      const d = await getRec("__draft__");
+      if(d && (d.site || d.startH || d.rows.some(r => r.bs || r.fs))){
+        S = {...d, id:d.id === "__draft__" ? null : d.id};
+      }
+    }catch(_){}
+  }
+  fillForm();
+})();
 </script>
